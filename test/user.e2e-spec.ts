@@ -60,4 +60,15 @@ describe('User Tests (e2e)', () => {
       .expect(422)
       .expect(({ body }) => expect(body.code).toEqual(2000));
   });
+
+  it('/Should deny create user with dupe email', () => {
+    userRepository.findOne.mockReturnValueOnce(
+      new Promise(resolve => resolve(user)),
+    );
+    return request(app.getHttpServer())
+      .post('/users')
+      .send(user)
+      .expect(422)
+      .expect(({ body }) => expect(body.code).toEqual(2000));
+  });
 });
